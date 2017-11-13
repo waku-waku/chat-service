@@ -1,31 +1,58 @@
 <template>
   <div class="login">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://gitter.im/vuejs/vue" target="_blank">Gitter Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+    <h1>Login</h1>
+    <div class="content">
+      <p>状態：{{ message }}</p>
+      <dl>
+        <dt>ID</dt>
+        <dd>
+          <input type="text" size="20" v-model="username">
+        </dd>
+        <dt>パスワード</dt>
+        <dd>
+          <input type="password" size="20" v-model="password">
+        </dd>
+      </dl>
+      <button @click="login">ログイン</button>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+import router from 'vue-router'
+
 export default {
   name: 'login',
+  computed: {
+    ...mapGetters(['getUser']),
+    message () {
+      console.log(this.getUser)
+      if (this.getUser.loggedIn) {
+        return 'ログイン中'
+      } else {
+        return 'ログインしてません'
+      }
+    }
+  },
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      username: '',
+      password: ''
+    }
+  },
+  methods: {
+    ...mapActions(['signIn']),
+    login: function () {
+      // console.log(this.getUser)
+      this.$store.dispatch('signIn', {
+        username: this.username,
+        password: this.password,
+        grant_type: 'password'
+      })
+      .then(function (result) {
+        router.push('Top')
+      })
     }
   }
 }
@@ -35,10 +62,15 @@ export default {
 <style scoped lang="scss">
 
 .login {
-  /*background: rgba(230,230,230,0.5);*/
-  background: #fff;
+  padding: 3rem 0;
+  text-align: center;
+  background: transparent;
+  .content {
+    padding: 3rem 0;
+  }
   h1, h2 {
     font-weight: normal;
+    font-size: 2.0rem;
   }
 
   ul {

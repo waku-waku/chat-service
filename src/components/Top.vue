@@ -1,17 +1,16 @@
 <template>
   <div class="top">
-    <p class="top-channel-title">ライブ中のチャンネル</p>
+    <p class="top-channel-title">友だち</p>
 
     <!-- <ChannelList/> -->
     <!-- ここはコンポーネント可 -->
     <div class="top-channel-list">
-      <div v-for="channel in channels" class="channel">
-        <router-link :to="{ name: 'Channel', params: { id: channel.id }}">
-          <p>{{channel.title}}<span>DJ Tuton</span></p>
-          <div class="thumb">
-            <img :src="channel.url" alt="">
-          </div>
-        </router-link>
+      <div v-for="friend in friends" class="friend">
+        <p>{{friend.username}}<span></span></p>
+        <p><span>ひとこと：</span>{{friend.description}}</p>
+        <div class="thumb">
+          <img :src="friend.iamge_url" alt="">
+        </div>
       </div>
     </div>
 
@@ -25,9 +24,7 @@
 </template>
 
 <script>
-// let _ = require( 'underscore' );
-import _ from 'underscore'
-import axios from 'axios'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'top',
@@ -38,66 +35,23 @@ export default {
       answer: 'I cannot give you an answer until you ask a question!',
       ans: 's',
       img_url: '',
-      channels: []
+      friends: []
     }
   },
-  created () {
-    this.loadChannels()
+  beforeUpdate () {
+    this.loadFriendList()
   },
   watch: {
-    // この関数は question が変わるごとに実行されます。
     question: function (newQuestion) {
       this.answer = 'Waiting for you to stop typing...'
       this.getAnswer()
     }
   },
   methods: {
-    // _.debounce は特にコストの高い処理の実行を制御するための
-    // lodash の関数です。この場合は、どのくらい頻繁に yesno.wtf/api
-    // へのアクセスすべきかを制限するために、ユーザーの入力が完全に
-    // 終わるのを待ってから ajax リクエストを実行しています。
-    // _.debounce (とその親戚である _.throttle )  についての詳細は
-    // https://lodash.com/docs#debounce を見てください。
-    // alert: this.$log(),
-
-    getAnswer: _.debounce(
-      function () {
-        if (this.question.indexOf('?') === -1) {
-          this.answer = 'Questions usually contain a question mark. ;-)'
-          return
-        }
-        this.answer = 'Thinking...'
-        var vm = this
-        axios.get('https://yesno.wtf/api')
-          .then(function (response) {
-            console.log(response)
-            vm.answer = _.capitalize(response.data.answer)
-          })
-          .catch(function (error) {
-            vm.answer = 'Error! Could not reach the API. ' + error
-          })
-      },
-      // ユーザーの入力が終わるのを待つ時間をミリ秒で指定します。
-      500
-    ),
-
-    getTest: function () {
-      let vm = this
-      axios.get('https://yesno.wtf/api')
-        .then(function (res) {
-          console.log(res.data)
-          vm.ans = res.data.answer
-          vm.img_url = res.data.image
-        })
-    },
-
-    loadChannels: function () {
-      let vm = this
-      axios.get('http://localhost:3000/channels')
-        .then(function (res) {
-          console.log(res.data.channels)
-          vm.channels = res.data.channels
-        })
+    ...mapActions(['loadFriendList']),
+    loadFriendList: function () {
+      // console.log(this.getUser)
+      this.$store.dispatch('loadFriendList')
     }
   }
 }

@@ -2,7 +2,7 @@
   <div id="app">
     <header id="header">
       <div class="container">
-        <h1><a href="/">M.pod ~ ver1.0 ~</a></h1>
+        <h1><a href="/">Chat Service ~ ver1.0 ~</a></h1>
 
         <nav id="nav">
           <ul>
@@ -24,7 +24,6 @@
 
 <script>
 export default {
-  name: 'app'
 }
 </script>
 
@@ -40,7 +39,7 @@ export default {
 }
 
 #router-view {
-  padding: 2rem 0;
+  // padding: 2rem 0;
   // text-align: center;
 }
 

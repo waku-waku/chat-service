@@ -1,8 +1,8 @@
 <template>
   <div class="about">
 
-    <img src="../assets/logo.png">
-    <h2>About page.</h2>
+    <h2>About</h2>
+    <p>Chat serviceはLINEを模倣したチャットサービスです。</p>
   </div>
 </template>
 
@@ -11,11 +11,7 @@ export default {
   name: 'about',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
     }
-  },
-  fetch () {
-    alert('dd')
   }
 }
 </script>
@@ -24,9 +20,12 @@ export default {
 <style scoped lang="scss">
 
 .about {
-  background: rgba(23,0,23,0.5);
+  padding: 3rem 0;
+  background: rgba(241,241,241,1);
   h1, h2 {
     font-weight: normal;
+    font-size: 2.0rem;
+    padding: 0 0 1rem 0;
   }
 
   ul {
