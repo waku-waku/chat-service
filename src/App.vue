@@ -2,7 +2,7 @@
   <div id="app">
     <header id="header">
       <div class="container">
-        <h1><a href="/">Chat Service ~ ver1.0 ~</a></h1>
+        <h1><a href="/">Gourmet</a></h1>
 
         <nav id="nav">
           <ul>
@@ -47,7 +47,7 @@ html, body {
   width: 100%;
   height: 100%;
   font-size: 100%;
-  background: #f1f1f1;
+  background: #f7f9f9;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   -webkit-overflow-scrolling: touch;
@@ -60,19 +60,25 @@ a {
 }
 
 .container {
-  width: 80%;
+  width: 960px;
   position: relative;
   margin: 0 auto;
 }
 
 .thumb {
+  position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
   img {
-    overflow: hidden;
+    // overflow: hidden;
+    position: relative;
+    top: 0;
+    left: 0;
     display: block;
-    max-width: 100%;
-    max-height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    max-width: inherit;
   }
 }
 
@@ -86,7 +92,7 @@ a {
   position: relative;
   background: #e6713f;
   color: #fff;
-  padding: 0.6rem 0.5rem 0.5rem;
+  padding: 0.5rem 0.5rem 0.5rem 0;
   text-align: left;
   box-shadow: 0 0 1px 0 #777;
   h1 {
@@ -99,7 +105,7 @@ a {
       height: 100%;
       vertical-align: middle;
       text-decoration: none;
-      font-size: 1.0rem;
+      font-size: 1.5rem;
       color: #fff;
     }
   }
@@ -111,6 +117,7 @@ a {
     // padding: 2px 0 0;
     vertical-align: middle;
     ul {
+      margin: 0.45rem 0 0 0;
       li {
         display: inline-block;
         margin: 0 0.5rem;

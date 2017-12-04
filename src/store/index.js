@@ -17,7 +17,8 @@ export default new Vuex.Store({
       token: '',
       image_url: ''
     },
-    friends: {}
+    friends: {},
+    foods: {}
   },
   actions,
   mutations,

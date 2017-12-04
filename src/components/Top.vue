@@ -1,57 +1,98 @@
 <template>
   <div class="top">
-    <p class="top-channel-title">友だち</p>
 
-    <!-- <ChannelList/> -->
-    <!-- ここはコンポーネント可 -->
-    <div class="top-channel-list">
-      <div v-for="friend in friends" class="friend">
-        <p>{{friend.username}}<span></span></p>
-        <p><span>ひとこと：</span>{{friend.description}}</p>
-        <div class="thumb">
-          <img :src="friend.iamge_url" alt="">
-        </div>
-      </div>
-    </div>
+    <!-- <ul v-if="foods.length" class="food-list">
+      <li v-for="food in foods">
+        <a href="#">
+          <div class="title-header">
+            <p class="title">{{ food.title }}</p>
+          </div>
+          <div class="disc">
+            <section class="share">
+              <a href="#"><span>♡</span></a>
+              <a href="#"><span>◎</span></a>
+            </section>
+          </div>
+          <div class="icon">
+            <div class="thumb">
+              <img :src="food.image_url" alt="">
+            </div>
+          </div>
+        </a>
+      </li>
+    </ul> -->
 
+    <section v-if="foods.length" class="food-list">
+      <article v-for="food in foods">
+        <a href="#">
+          <header class="title-head">
+            <p class="title">{{ food.title }}</p>
+            <span v-if="foods.tag" class="tag">{{ food.tag.name }}</span>
+          </header>
+          <div class="image">
+            <div class="thumb">
+              <img :src="food.image_url" alt="">
+            </div>
+          </div>
+          <div class="discription">
+            <div class="location-btn">
+              <a href="#"><span>🌏</span><p v-if="foods.store">{{ foods.restaurant.name }}</p></a>
+            </div>
+            <!-- <div class="location">
+              <p v-if="food.location"><span>Area：</span>{{ food.location.name }}<span>></span></p>
+              <p v-else><span>Area：</span>場所が設定されていません</p>
+            </div> -->
+            <!-- <div class="tag">
+              <p v-if="food.tag"><span>Tag：</span>{{ food.tag.name }}<span>></span></p>
+              <p v-else><span>Tag：</span>タグが設定されていません</p>
+            </div> -->
+            <section class="share">
+              <a href="#"><span>♡</span></a>
+              <a href="#"><span>◎</span></a>
+              <a href="#"><span>✆</span></a>
+            </section>
 
-    <!-- <a @click="getTest">click</a>
-    <p>{{ ans }}</p>
-    <img :src='img_url' alt="">
+            <div class="location">
 
-    <a @click="loadChannels">load</a> -->
+            </div>
+          </div>
+        </a>
+      </article>
+    </section>
+
+    <p v-else>
+      Nothing left in the list. Add a new todo in the input above.
+    </p>
+
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'top',
+  computed: {
+    ...mapGetters(['getFoodList'])
+  },
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
-      question: '',
-      answer: 'I cannot give you an answer until you ask a question!',
-      ans: 's',
-      img_url: '',
-      friends: []
+      foods: []
     }
   },
-  beforeUpdate () {
-    this.loadFriendList()
-  },
-  watch: {
-    question: function (newQuestion) {
-      this.answer = 'Waiting for you to stop typing...'
-      this.getAnswer()
-    }
+  created () {
+    this.loadFoodList()
   },
   methods: {
-    ...mapActions(['loadFriendList']),
-    loadFriendList: function () {
-      // console.log(this.getUser)
-      this.$store.dispatch('loadFriendList')
+    ...mapActions(['loadFoodList']),
+    loadFoodList: function () {
+      let vm = this
+      this.$store.dispatch('loadFoodList')
+        .then(function (result) {
+          vm.foods = vm.getFoodList
+        })
+
+      vm.foods = this.getFoodList
     }
   }
 }
@@ -62,38 +103,64 @@ export default {
 @charset "utf-8";
 
 .top {
-  .top-channel-title {
-    display: inline-block;
-    color: #333;
-    font-size: 1rem;
-    border-bottom: 1px solid #999;
-  }
-  .top-channel-list {
-    margin: 1rem 0;
-    .channel {
-      background: rgba(249,249,249,0.92);
-      display: inline-block;
+  .food-list {
+    margin: 5rem auto;
+    width: 580px;
+    display: block;
+    // text-align: center;
+    article {
+      background: #fefefe;
+      margin: 1rem 0;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 1px 0 #ccc;
       border-radius: 3px;
-      border: solid 1px rgba(34,34,34,0.6);
-      box-shadow: 0 0 1px 0 #cecece;
-      width: 24%;
-      height: 15vw;
-      margin: 0 0.5rem 0.5rem 0;
-      .thumb {
-        height: 90%;
+      .title-head {
+        padding: .9rem 1.0rem;
+        .title {
+          text-align: center;
+          font-weight: 900;
+          font-size: .9rem;
+          color: #333;
+        }
       }
-      p {
-        padding: 0.5rem 0.8rem 0;
-        font-size: 1rem;
-        font-weight: 900;
-        letter-spacing: 2px;
-        span {
-          font-size: 0.8rem;
-          margin: 0 0 0 8px;
-          letter-spacing: 0px;
+      .image {
+        position: relative;
+        width: 100%;
+        height: 35vw;
+      }
+      .discription {
+        position: relative;
+        padding: .7rem .7rem .3rem;
+        .location-btn {
+          display: inline-block;
+          padding: 0 .1rem;
+          color: #7e7e7e;
+          a {
+            span {
+              font-weight: 900;
+              font-size: 1.5rem;
+              padding: 0 .2rem 0 0;
+            }
+          }
+        }
+        .share {
+          display: inline-block;
+          text-align: right;
+          float: right;
+          a {
+            margin: 0 0.3rem;
+            span {
+              font-size: 1.5rem;
+            }
+          }
+        }
+        .location {
+          display: block;
+
         }
       }
     }
+
   }
 
   h1, h2 {

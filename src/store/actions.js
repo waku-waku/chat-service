@@ -1,6 +1,11 @@
 import axios from 'axios'
 import config from '../config'
 
+axios.defaults.headers.common = {
+  'Content-Type': 'application/x-www-form-urlencoded',
+  'X-Requested-With': 'XMLHttpRequest'
+}
+
 // ここを../apiでもっとモジュール化
 
 export default {
@@ -51,18 +56,54 @@ export default {
   loadFriendList ({ commit, state }) {
     return new Promise((resolve, reject) => {
       if (state.user.loggedIn) {
-        axios.get('http://localhost:3000/api/v1/friends', {
-          headers: { Authorization: 'Bearer ' + state.user.token }
+        // let params = new URLSearchParams()
+        // axios.get('http://localhost:3000/api/v1/friends', {
+        //   withCredentials: true,
+        //   headers: {
+        //     'Access-Control-Allow-Origin': '*',
+        //     'Access-Control-Allow-Credentials': 'true',
+        //     'Authorization': 'Bearer {state.user.token}'
+        //     // 'Access-Control-Allow-Headers': 'Content-Type'
+        //   }
+        // })
+        axios({
+          method: 'get',
+          url: 'http://localhost:3000/api/v1/friends',
+          withCredentials: true,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': 'true',
+            'Authorization': `Bearer ${state.user.token}`
+          }
         })
         .then(function (response) {
           let friends = response.data
-          console.log(friends)
-          commit('setUser', { friends })
+          commit('setFriends', { friends })
         })
         .catch(reject)
       } else {
         reject(new Error('something bad happened'))
       }
+    })
+  },
+
+  loadFoodList ({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'get',
+        url: 'http://localhost:3000/api/v1/foods/',
+        withCredentials: true,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': 'true',
+          'Authorization': `Bearer ${state.user.token}`
+        }
+      })
+      .then(function (response) {
+        let foods = response.data
+        commit('setFoods', { foods })
+      })
+      .catch(reject)
     })
   }
 

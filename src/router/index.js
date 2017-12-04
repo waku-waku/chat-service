@@ -4,6 +4,7 @@ import Top from '../components/Top'
 import Login from '../components/Login'
 import About from '../components/About'
 import Chat from '../components/Chat'
+import Friend from '../components/Friend'
 
 // Sync store to router
 import store from '../store'
@@ -14,8 +15,12 @@ const routes = [
   {
     path: '/',
     name: 'Top',
-    component: Top,
-    meta: { requiresAuth: true }
+    component: Top
+  },
+  {
+    path: '/friend',
+    name: 'Friend',
+    component: Friend
   },
   {
     path: '/login',

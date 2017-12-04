@@ -30,5 +30,9 @@ export default {
 
   setFriends: (state, { friends }) => {
     state.friends = friends
+  },
+
+  setFoods: (state, { foods }) => {
+    state.foods = foods
   }
 }
